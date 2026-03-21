@@ -1,0 +1,307 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { SectionHeader, TechPill } from '@/components/shared';
+import type { TimelineItem } from '@/types/timeline';
+
+const timelineData: TimelineItem[] = [
+  {
+    id: 'eduniketan',
+    year: '2025',
+    title: 'Software Engineer Intern',
+    organization: 'Eduniketan Pvt Ltd.',
+    description:
+      'Building TheEducode — a full-stack educational platform with role-based auth, secure exam environments, interactive coding challenges, and real-time analytics dashboards.',
+    tech: ['Node.js', 'React', 'Python', 'Supabase', 'Firebase'],
+    accent: 'var(--accent-green)',
+    type: 'work',
+  },
+  {
+    id: 'lpu',
+    year: '2023 — Present',
+    title: 'B.Tech Computer Science & Engineering',
+    organization: 'Lovely Professional University',
+    description: 'Pursuing B.Tech CSE with CGPA: 7.57. Focused on game development, machine learning, and backend engineering.',
+    accent: 'var(--accent-cyan)',
+    type: 'education',
+  },
+  {
+    id: 'nptel',
+    year: '2022',
+    title: 'Cloud Computing Certification',
+    organization: 'NPTEL',
+    description: 'Completed cloud computing certification covering distributed systems, virtualization, and cloud architectures.',
+    accent: 'var(--accent-purple)',
+    type: 'certification',
+  },
+  {
+    id: 'dsa',
+    year: '2022',
+    title: 'Advanced DSA Training',
+    organization: 'Programming Pathshala',
+    description: 'Intensive training in advanced data structures and algorithms, competitive programming techniques.',
+    accent: 'var(--accent-purple)',
+    type: 'certification',
+  },
+  {
+    id: '12th',
+    year: '2021 — 2023',
+    title: '12th Grade (Intermediate)',
+    organization: 'Lal Bahadur Shastri Sr. Sec. School',
+    description: 'Completed intermediate education with 71% marks.',
+    accent: 'var(--accent-orange)',
+    type: 'education',
+  },
+  {
+    id: '10th',
+    year: '2020 — 2021',
+    title: '10th Grade (Matriculation)',
+    organization: 'Christ Church Diocesan School',
+    description: 'Completed matriculation with 72.56% marks.',
+    accent: 'var(--accent-orange)',
+    type: 'education',
+  },
+];
+
+const ACCENT_HEX: Record<string, string> = {
+  'var(--accent-green)': '#00FF88',
+  'var(--accent-cyan)': '#00F0FF',
+  'var(--accent-purple)': '#8B5CF6',
+  'var(--accent-orange)': '#FF8C00',
+  'var(--accent-magenta)': '#FF006E',
+};
+
+const TYPE_ICONS: Record<string, string> = {
+  work: '⚡',
+  education: '🎓',
+  certification: '🏆',
+};
+
+// ─── Decorative CSS DNA Helix ─────────────────────────────────────────────────
+function DNAHelix({ count }: { count: number }) {
+  const rungs = Array.from({ length: count });
+  const HEIGHT = count * 64;
+  const svgWidth = 64;
+  const amplitude = 22;
+
+  const buildStrand = (phase: number) => {
+    const pts = rungs.map((_, i) => {
+      const t = i / (count - 1);
+      const x = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4 + phase);
+      const y = 8 + t * (HEIGHT - 16);
+      return `${x},${y}`;
+    });
+    return `M ${pts.join(' L ')}`;
+  };
+
+  return (
+    <div
+      className="hidden lg:block flex-shrink-0 relative"
+      style={{ width: svgWidth, height: HEIGHT }}
+    >
+      <svg
+        viewBox={`0 0 ${svgWidth} ${HEIGHT}`}
+        width={svgWidth}
+        height={HEIGHT}
+        className="absolute inset-0"
+        style={{ filter: 'drop-shadow(0 0 6px rgba(0,240,255,0.4))' }}
+      >
+        <defs>
+          <linearGradient id="dnaGrad1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#00F0FF" stopOpacity="0.9" />
+            <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#00FF88" stopOpacity="0.9" />
+          </linearGradient>
+          <linearGradient id="dnaGrad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#00FF88" stopOpacity="0.7" />
+            <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#00F0FF" stopOpacity="0.7" />
+          </linearGradient>
+        </defs>
+
+        {/* Strand A */}
+        <path d={buildStrand(0)} stroke="url(#dnaGrad1)" strokeWidth="2" fill="none" />
+        {/* Strand B */}
+        <path d={buildStrand(Math.PI)} stroke="url(#dnaGrad2)" strokeWidth="2" fill="none" />
+
+        {/* Rungs + nodes */}
+        {rungs.map((_, i) => {
+          const t = i / (count - 1);
+          const xA = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4);
+          const xB = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4 + Math.PI);
+          const y = 8 + t * (HEIGHT - 16);
+          const item = timelineData[i];
+          const hex = item ? ACCENT_HEX[item.accent] || '#00F0FF' : '#00F0FF';
+          return (
+            <g key={i}>
+              <line x1={xA} y1={y} x2={xB} y2={y} stroke={hex} strokeWidth="1" strokeOpacity="0.35" />
+              <circle cx={xA} cy={y} r="4" fill={hex} fillOpacity="0.8" />
+              <circle cx={xB} cy={y} r="4" fill={hex} fillOpacity="0.6" />
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Slow rotation via CSS */}
+      <style>{`
+        @keyframes dnaSpin {
+          0%, 100% { transform: scaleX(1); }
+          50% { transform: scaleX(-1); }
+        }
+        .dna-animate { animation: dnaSpin 8s ease-in-out infinite; }
+      `}</style>
+    </div>
+  );
+}
+
+// ─── Timeline Card ────────────────────────────────────────────────────────────
+function TimelineCard({ item, index, side }: { item: TimelineItem; index: number; side: 'left' | 'right' }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setIsVisible(true);
+    }, { threshold: 0.25 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const hex = ACCENT_HEX[item.accent] || '#00F0FF';
+
+  return (
+    <div
+      ref={ref}
+      className={`relative transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${side === 'left' ? '-translate-x-16' : 'translate-x-16'}`}`}
+      style={{ transitionDelay: `${index * 80}ms` }}
+    >
+      {/* Node dot (left side for medium+) */}
+      <div
+        className="absolute left-[-37px] top-6 w-4 h-4 rounded-full border-2 z-10 hidden md:block"
+        style={{
+          borderColor: hex,
+          background: '#050505',
+          boxShadow: `0 0 10px ${hex}80`,
+        }}
+      />
+
+      {/* Card */}
+      <div
+        className="glass-card p-6 relative overflow-hidden group transition-all duration-300 hover:scale-[1.01]"
+        style={{ borderColor: `${hex}25` }}
+      >
+        {/* Accent left bar */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-0.5"
+          style={{ background: `linear-gradient(to bottom, ${hex}, transparent)` }}
+        />
+
+        {/* Top glow on hover */}
+        <div
+          className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: `linear-gradient(to right, transparent, ${hex}, transparent)` }}
+        />
+
+        <div className="flex items-start gap-4">
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1"
+            style={{ background: `${hex}15`, border: `1px solid ${hex}30` }}
+          >
+            {TYPE_ICONS[item.type] ?? '◉'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <span
+              className="inline-block font-jetbrains-mono text-[11px] px-2 py-0.5 rounded-full mb-2"
+              style={{ color: hex, background: `${hex}15`, border: `1px solid ${hex}30` }}
+            >
+              {item.year}
+            </span>
+            <h3 className="font-space-grotesk text-lg font-semibold text-text-primary leading-tight">
+              {item.title}
+            </h3>
+            <p className="text-sm text-text-secondary mt-0.5">{item.organization}</p>
+            <p className="text-sm text-text-secondary leading-relaxed mt-2">{item.description}</p>
+            {item.tech && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {item.tech.map((t) => (
+                  <TechPill key={t} label={t} accent={item.accent} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Section ──────────────────────────────────────────────────────────────
+export default function ExperienceSection() {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const [lineHeight, setLineHeight] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = lineRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const wh = window.innerHeight;
+      if (rect.top < wh && rect.bottom > 0) {
+        const progress = Math.min(1, Math.max(0, (wh - rect.top) / (rect.height + wh * 0.5)));
+        setLineHeight(progress * 100);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <section id="experience" className="py-32 relative">
+      <div className="container-custom">
+        <SectionHeader number="04" title="EXPERIENCE" />
+
+        <p className="font-inter text-text-secondary mb-12 text-lg italic text-center">
+          &ldquo;Evolution of my journey — encoded in life&apos;s double helix.&rdquo;
+        </p>
+
+        {/* Layout: DNA helix on left, timeline on right */}
+        <div className="flex gap-8 max-w-4xl mx-auto" ref={lineRef}>
+
+          {/* ── DNA Helix (decorative, left) ── */}
+          <DNAHelix count={timelineData.length} />
+
+          {/* ── Timeline ── */}
+          <div className="flex-1 relative">
+            {/* Vertical glowing line */}
+            <div className="absolute left-0 top-0 bottom-0 w-px ml-[-2px] hidden md:block">
+              <div className="absolute inset-0 bg-[var(--bg-tertiary)]" />
+              <div
+                className="absolute top-0 w-full transition-all duration-200"
+                style={{
+                  height: `${lineHeight}%`,
+                  background: 'linear-gradient(180deg, var(--accent-cyan), var(--accent-purple), var(--accent-magenta))',
+                  boxShadow: '0 0 8px var(--accent-cyan)',
+                }}
+              />
+            </div>
+
+            {/* Cards */}
+            <div className="space-y-6 pl-6 md:pl-8">
+              {timelineData.map((item, i) => (
+                <TimelineCard key={item.id} item={item} index={i} side="right" />
+              ))}
+            </div>
+
+            {/* Bottom arrow */}
+            <div className="flex justify-start pl-6 md:pl-8 mt-6">
+              <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-accent-purple opacity-50" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
