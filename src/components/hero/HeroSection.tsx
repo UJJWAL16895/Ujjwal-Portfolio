@@ -100,7 +100,7 @@ export default function HeroSection() {
             <GradientButton href="#work" variant="primary">
               VIEW MY WORK ↓
             </GradientButton>
-            <GradientButton href="/documents/Ujjwal_Kumar_CV.pdf" variant="secondary">
+            <GradientButton href="/Specialized CV.pdf" variant="secondary" download="Ujjwal_Kumar_CV.pdf">
               DOWNLOAD CV ↗
             </GradientButton>
           </div>

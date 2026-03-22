@@ -83,7 +83,7 @@ export default function Footer() {
               { icon: <Github className="w-4 h-4" />, href: 'https://github.com/UJJWAL16895/' },
               {
                 icon: <Linkedin className="w-4 h-4" />,
-                href: 'https://linkedin.com/in/ujjwalkumar16895',
+                href: 'https://www.linkedin.com/in/ujjwal-kumar-6c18/',
               },
               {
                 icon: <Mail className="w-4 h-4" />,

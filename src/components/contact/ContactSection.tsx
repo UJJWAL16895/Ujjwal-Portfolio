@@ -9,10 +9,12 @@ function MagneticButton({
   children,
   href,
   label,
+  download,
 }: {
   children: React.ReactNode;
   href: string;
   label: string;
+  download?: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const { setCursorState } = useCursorStore();
@@ -59,6 +61,7 @@ function MagneticButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      download={download}
       className="flex flex-col items-center gap-2 p-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-glass)] transition-all duration-300 hover:bg-gradient-to-br hover:from-accent-cyan/10 hover:to-accent-purple/10 hover:border-[var(--border-hover)] group"
       style={{ transition: 'transform 0.15s ease-out' }}
       onMouseEnter={() => setCursorState('HOVER_LINK')}
@@ -213,13 +216,13 @@ export default function ContactSection() {
           <MagneticButton href="https://github.com/UJJWAL16895/" label="GitHub">
             <Github className="w-7 h-7" />
           </MagneticButton>
-          <MagneticButton href="https://linkedin.com/in/ujjwalkumar16895" label="LinkedIn">
+          <MagneticButton href="https://www.linkedin.com/in/ujjwal-kumar-6c18/" label="LinkedIn">
             <Linkedin className="w-7 h-7" />
           </MagneticButton>
           <MagneticButton href="mailto:ujjwalkumar16895@gmail.com" label="Email">
             <Mail className="w-7 h-7" />
           </MagneticButton>
-          <MagneticButton href="/documents/Ujjwal_Kumar_CV.pdf" label="Resume">
+          <MagneticButton href="/Specialized CV.pdf" label="Resume" download="Ujjwal_Kumar_CV.pdf">
             <FileDown className="w-7 h-7" />
           </MagneticButton>
         </div>

@@ -90,6 +90,7 @@ interface GradientButtonProps {
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
   className?: string;
+  download?: boolean | string;
 }
 
 export function GradientButton({
@@ -98,6 +99,7 @@ export function GradientButton({
   onClick,
   variant = 'primary',
   className = '',
+  download,
 }: GradientButtonProps) {
   const { setCursorState } = useCursorStore();
 
@@ -121,6 +123,7 @@ export function GradientButton({
           className={classes}
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
+          download={download}
         >
           {children}
         </a>
