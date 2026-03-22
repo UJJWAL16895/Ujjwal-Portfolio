@@ -148,7 +148,7 @@ function ProjectCard({ project }: { project: Project }) {
 
         {/* Image area */}
         <div
-          className={`relative overflow-hidden bg-bg-tertiary w-full aspect-[16/10] max-h-[220px] md:max-h-[500px] border-b border-[var(--border-subtle)]`}
+          className={`relative overflow-hidden bg-bg-tertiary w-full aspect-[16/10] max-h-[220px] md:max-h-[750px] border-b border-[var(--border-subtle)]`}
         >
           <div className="w-full h-full transition-transform duration-700 group-hover:scale-100 relative">
             {project.image && !project.image.includes('hero.jpg') ? (
