@@ -2,7 +2,7 @@
 
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useGLTF, Float } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 export function MechHead() {
@@ -14,7 +14,6 @@ export function MechHead() {
 
   // Target rotation for lerping
   const targetRotation = useRef({ x: 0, y: 0 });
-  const mouse = useRef({ x: 0, y: 0 });
 
   // Mouse move handler is actually best handled at the window level 
   // or passed down, but for R3F 'state.mouse' is available in useFrame.

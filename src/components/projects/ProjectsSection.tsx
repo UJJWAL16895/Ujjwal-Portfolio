@@ -64,7 +64,7 @@ function ProjectPlaceholder({ project }: { project: Project }) {
   );
 }
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project }: { project: Project }) {
   const { setCursorState } = useCursorStore();
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -274,8 +274,8 @@ export function ProjectsSection() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>
