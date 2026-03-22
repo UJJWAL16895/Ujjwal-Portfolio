@@ -1,8 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
 import { SectionHeader, TechPill } from '@/components/shared';
 import type { TimelineItem } from '@/types/timeline';
+import dynamic from 'next/dynamic';
+
+const ExperienceDNACanvas = dynamic(
+  () => import('./ExperienceDNACanvas').then((mod) => mod.ExperienceDNACanvas),
+  { ssr: false, loading: () => <div className="hidden lg:block w-64 h-[800px]" /> }
+);
 
 const timelineData: TimelineItem[] = [
   {
@@ -77,83 +84,7 @@ const TYPE_ICONS: Record<string, string> = {
   certification: '🏆',
 };
 
-// ─── Decorative CSS DNA Helix ─────────────────────────────────────────────────
-function DNAHelix({ count }: { count: number }) {
-  const rungs = Array.from({ length: count });
-  const HEIGHT = count * 64;
-  const svgWidth = 64;
-  const amplitude = 22;
-
-  const buildStrand = (phase: number) => {
-    const pts = rungs.map((_, i) => {
-      const t = i / (count - 1);
-      const x = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4 + phase);
-      const y = 8 + t * (HEIGHT - 16);
-      return `${x},${y}`;
-    });
-    return `M ${pts.join(' L ')}`;
-  };
-
-  return (
-    <div
-      className="hidden lg:block flex-shrink-0 relative"
-      style={{ width: svgWidth, height: HEIGHT }}
-    >
-      <svg
-        viewBox={`0 0 ${svgWidth} ${HEIGHT}`}
-        width={svgWidth}
-        height={HEIGHT}
-        className="absolute inset-0"
-        style={{ filter: 'drop-shadow(0 0 6px rgba(0,240,255,0.4))' }}
-      >
-        <defs>
-          <linearGradient id="dnaGrad1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#00F0FF" stopOpacity="0.9" />
-            <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#00FF88" stopOpacity="0.9" />
-          </linearGradient>
-          <linearGradient id="dnaGrad2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#00FF88" stopOpacity="0.7" />
-            <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#00F0FF" stopOpacity="0.7" />
-          </linearGradient>
-        </defs>
-
-        {/* Strand A */}
-        <path d={buildStrand(0)} stroke="url(#dnaGrad1)" strokeWidth="2" fill="none" />
-        {/* Strand B */}
-        <path d={buildStrand(Math.PI)} stroke="url(#dnaGrad2)" strokeWidth="2" fill="none" />
-
-        {/* Rungs + nodes */}
-        {rungs.map((_, i) => {
-          const t = i / (count - 1);
-          const xA = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4);
-          const xB = svgWidth / 2 + amplitude * Math.sin(t * Math.PI * 4 + Math.PI);
-          const y = 8 + t * (HEIGHT - 16);
-          const item = timelineData[i];
-          const hex = item ? ACCENT_HEX[item.accent] || '#00F0FF' : '#00F0FF';
-          return (
-            <g key={i}>
-              <line x1={xA} y1={y} x2={xB} y2={y} stroke={hex} strokeWidth="1" strokeOpacity="0.35" />
-              <circle cx={xA} cy={y} r="4" fill={hex} fillOpacity="0.8" />
-              <circle cx={xB} cy={y} r="4" fill={hex} fillOpacity="0.6" />
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* Slow rotation via CSS */}
-      <style>{`
-        @keyframes dnaSpin {
-          0%, 100% { transform: scaleX(1); }
-          50% { transform: scaleX(-1); }
-        }
-        .dna-animate { animation: dnaSpin 8s ease-in-out infinite; }
-      `}</style>
-    </div>
-  );
-}
-
+// Removed static DNAHelix component
 // ─── Timeline Card ────────────────────────────────────────────────────────────
 function TimelineCard({ item, index, side }: { item: TimelineItem; index: number; side: 'left' | 'right' }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -240,7 +171,16 @@ function TimelineCard({ item, index, side }: { item: TimelineItem; index: number
 // ─── Main Section ──────────────────────────────────────────────────────────────
 export default function ExperienceSection() {
   const lineRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isSectionInView = useInView(sectionRef, { margin: "200px" });
+  const [hasRenderedDNA, setHasRenderedDNA] = useState(false);
   const [lineHeight, setLineHeight] = useState(0);
+
+  useEffect(() => {
+    if (isSectionInView && !hasRenderedDNA) {
+      setHasRenderedDNA(true);
+    }
+  }, [isSectionInView, hasRenderedDNA]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -259,7 +199,7 @@ export default function ExperienceSection() {
   }, []);
 
   return (
-    <section id="experience" className="py-32 relative">
+    <section id="experience" ref={sectionRef} className="py-32 relative">
       <div className="container-custom">
         <SectionHeader number="04" title="EXPERIENCE" />
 
@@ -270,8 +210,10 @@ export default function ExperienceSection() {
         {/* Layout: DNA helix on left, timeline on right */}
         <div className="flex gap-8 max-w-4xl mx-auto" ref={lineRef}>
 
-          {/* ── DNA Helix (decorative, left) ── */}
-          <DNAHelix count={timelineData.length} />
+          {/* ── DNA Helix (3D Model, left) ── */}
+          <div className="hidden lg:block w-[400px] flex-shrink-0 relative -ml-16">
+            {hasRenderedDNA && <ExperienceDNACanvas inView={isSectionInView} />}
+          </div>
 
           {/* ── Timeline ── */}
           <div className="flex-1 relative">

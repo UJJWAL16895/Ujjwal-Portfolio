@@ -9,7 +9,7 @@ const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false 
 const NeuralBackground = dynamic(() => import('@/components/shared').then(mod => mod.NeuralBackground), { ssr: false });
 const HeroSection = dynamic(() => import('@/components/hero/HeroSection'), { ssr: false });
 const AboutSection = dynamic(() => import('@/components/about/AboutSection'), { ssr: false });
-const ProjectsSection = dynamic(() => import('@/components/projects/ProjectsSection'), { ssr: false });
+const ProjectsSection = dynamic(() => import('@/components/projects/ProjectsSection').then(mod => mod.ProjectsSection), { ssr: false });
 const SkillsSection = dynamic(() => import('@/components/skills/SkillsSection'), { ssr: false });
 const ExperienceSection = dynamic(() => import('@/components/experience/ExperienceSection'), { ssr: false });
 const ContactSection = dynamic(() => import('@/components/contact/ContactSection'), { ssr: false });

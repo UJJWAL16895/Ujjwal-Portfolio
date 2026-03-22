@@ -6,7 +6,6 @@ import { useCursorStore } from '@/store/cursorStore';
 import { projects } from '@/components/projects/ProjectData';
 import type { Project } from '@/types/project';
 import Tilt from 'react-parallax-tilt';
-import { ProjectModal } from './ProjectModal';
 
 function ProjectPlaceholder({ project }: { project: Project }) {
   const patternMap: Record<string, string> = {
@@ -65,9 +64,10 @@ function ProjectPlaceholder({ project }: { project: Project }) {
   );
 }
 
-function ProjectCard({ project, index, onClick }: { project: Project; index: number; onClick: (p: Project) => void }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const { setCursorState } = useCursorStore();
   const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -85,6 +85,20 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
 
   const isFullWidth = project.featured;
 
+  const handleMouseEnter = () => {
+    setCursorState('HOVER_PROJECT');
+    if (videoRef.current && project.video) {
+      videoRef.current.play().catch((e) => console.log('Video auto-play failed', e));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorState('DEFAULT');
+    if (videoRef.current && project.video) {
+      videoRef.current.pause();
+    }
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
@@ -100,8 +114,6 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
       className={`${isFullWidth ? 'col-span-1 md:col-span-2' : 'col-span-1'} transition-all duration-1000 cursor-pointer ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-      onClick={() => onClick(project)}
     >
       <Tilt
         tiltMaxAngleX={5}
@@ -113,8 +125,8 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
       >
         <div
           className="group relative h-full bg-bg-tertiary border border-[var(--border-subtle)] rounded-xl overflow-hidden transition-all duration-300"
-          onMouseEnter={() => setCursorState('HOVER_PROJECT')}
-          onMouseLeave={() => setCursorState('DEFAULT')}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
         >
           {/* Interactive Glow Border Layer */}
@@ -124,53 +136,93 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
               background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), color-mix(in srgb, ${project.accent} 20%, transparent), transparent 40%)`
             }}
           />
+
+          {/* Glow Border Outline */}
+          <div 
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-20 rounded-xl"
+            style={{
+              boxShadow: `inset 0 0 20px -5px color-mix(in srgb, ${project.accent} 50%, transparent), 0 0 20px -5px color-mix(in srgb, ${project.accent} 50%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${project.accent} 50%, transparent)`
+            }}
+          />
+
         {/* Image area */}
         <div
-          className={`relative overflow-hidden ${
-            isFullWidth ? 'aspect-[16/9]' : 'aspect-[4/3]'
-          }`}
+          className={`relative overflow-hidden bg-bg-tertiary w-full aspect-[16/10] max-h-[220px] md:max-h-[500px] border-b border-[var(--border-subtle)]`}
         >
-          <div className="w-full h-full transition-transform duration-700 group-hover:scale-105">
-            <ProjectPlaceholder project={project} />
+          <div className="w-full h-full transition-transform duration-700 group-hover:scale-100 relative">
+            {project.image && !project.image.includes('hero.jpg') ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                className={`w-full h-full object-cover transition-opacity duration-500 ${
+                  project.video ? 'group-hover:opacity-0' : ''
+                }`}
+              />
+            ) : (
+              <div className={`w-full h-full transition-opacity duration-500 ${
+                project.video ? 'group-hover:opacity-0' : ''
+              }`}>
+                <ProjectPlaceholder project={project} />
+              </div>
+            )}
+
+            {project.video && (
+              <video
+                ref={videoRef}
+                src={project.video}
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
+            )}
           </div>
 
           {/* Scanline on hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none scanline-overlay" />
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none scanline-overlay z-10" />
         </div>
 
         {/* Info */}
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-3">
-            <span className="font-jetbrains-mono text-xs text-text-tertiary">
-              PROJECT {project.number}
+        <div className="p-5 relative z-30">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-jetbrains-mono text-[10px] text-text-tertiary uppercase tracking-wider">
+              {project.type || 'PROJECT'} • {project.number}
             </span>
-            <span className="font-jetbrains-mono text-xs text-text-tertiary">{project.year}</span>
+            <span className="font-jetbrains-mono text-[10px] text-text-tertiary">{project.year}</span>
           </div>
 
           <h3
-            className={`font-space-grotesk font-semibold text-text-primary mb-2 ${
-              isFullWidth ? 'text-2xl md:text-3xl' : 'text-xl'
+            className={`font-space-grotesk font-bold text-text-primary mb-1 ${
+              isFullWidth ? 'text-xl md:text-2xl' : 'text-lg'
             }`}
           >
             {project.title}
           </h3>
 
-          <p className="text-sm text-text-secondary mb-1">{project.subtitle}</p>
+          <p className="text-xs text-text-secondary font-medium mb-2">{project.subtitle}</p>
 
           {project.description && (
-            <p className="text-sm text-text-secondary mt-3 line-clamp-3 leading-relaxed">
+            <p className="text-xs text-text-secondary/80 line-clamp-2 leading-relaxed mb-4">
               {project.description}
             </p>
           )}
 
-          <div className="flex flex-wrap gap-2 mt-4">
-            {project.tech.map((t) => (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {project.tech.slice(0, 4).map((t) => (
               <TechPill key={t} label={t} accent={project.accent} />
             ))}
+            {project.tech.length > 4 && (
+              <span className="text-[10px] text-text-tertiary self-center ml-1">
+                +{project.tech.length - 4}
+              </span>
+            )}
           </div>
 
           {/* Links */}
-          <div className="flex gap-4 mt-4 pt-4 border-t border-[var(--border-subtle)] relative z-20">
+          <div className="flex gap-4 pt-3 border-t border-[var(--border-subtle)] relative z-20">
             {project.github && (
               <a
                 href={project.github}
@@ -179,9 +231,28 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
                 className="font-jetbrains-mono text-xs text-text-secondary hover:text-accent-cyan transition-colors"
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={() => setCursorState('HOVER_LINK')}
-                onMouseLeave={() => setCursorState('HOVER_PROJECT')}
+                onMouseLeave={(e) => {
+                  e.stopPropagation();
+                  setCursorState('HOVER_PROJECT');
+                }}
               >
                 GITHUB ↗
+              </a>
+            )}
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-jetbrains-mono text-xs text-text-secondary hover:text-accent-cyan transition-colors"
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={() => setCursorState('HOVER_LINK')}
+                onMouseLeave={(e) => {
+                  e.stopPropagation();
+                  setCursorState('HOVER_PROJECT');
+                }}
+              >
+                LIVE DEMO ↗
               </a>
             )}
           </div>
@@ -192,9 +263,7 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
   );
 }
 
-export default function ProjectsSection() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
+export function ProjectsSection() {
   return (
     <section id="work" className="py-32 relative">
       <div className="container-custom">
@@ -206,12 +275,10 @@ export default function ProjectsSection() {
 
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} onClick={setSelectedProject} />
+            <ProjectCard key={project.id} project={project} index={i} />
           ))}
         </div>
       </div>
-
-      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </section>
   );
 }

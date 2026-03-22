@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { SectionHeader, GlassCard, TechPill } from '@/components/shared';
 
@@ -104,35 +105,36 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-[400px_1fr] gap-12 items-start mb-20">
           {/* Photo */}
           <div
-            className={`relative group transition-all duration-1000 ease-out ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-32'
-            }`}
+            className={`relative group transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-32'
+              }`}
           >
-            {/* Stylized placeholder for portrait */}
+            {/* Stylized frame for portrait */}
             <div className="relative w-full aspect-[4/5] bg-bg-tertiary border-2 border-[var(--border-subtle)] overflow-hidden">
               {/* Corner brackets */}
-              <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-accent-cyan opacity-50" />
-              <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-accent-cyan opacity-50" />
-              <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-accent-cyan opacity-50" />
-              <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-accent-cyan opacity-50" />
+              <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-accent-cyan opacity-50 z-10" />
+              <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-accent-cyan opacity-50 z-10" />
+              <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-accent-cyan opacity-50 z-10" />
+              <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-accent-cyan opacity-50 z-10" />
 
-              {/* Avatar placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div
-                  className="w-48 h-48 rounded-full flex items-center justify-center"
-                  style={{ background: 'var(--gradient-card)' }}
-                >
-                  <span className="font-space-grotesk text-6xl font-bold gradient-text">UK</span>
-                </div>
+              {/* Actual Photo */}
+              <div className="absolute inset-0">
+                <Image
+                  src="/UJJWAL.png"
+                  alt="Ujjwal Kumar"
+                  fill
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-110"
+                  sizes="(max-width: 400px) 100vw, 400px"
+                  priority
+                />
               </div>
 
               {/* Gradient overlay bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-bg-primary to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-primary/80 to-transparent z-10" />
 
               {/* Glitch effect on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mix-blend-screen">
-                <div className="absolute inset-0 bg-accent-cyan/5 translate-x-0.5" />
-                <div className="absolute inset-0 bg-accent-magenta/5 -translate-x-0.5" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mix-blend-screen pointer-events-none">
+                <div className="absolute inset-0 bg-accent-cyan/10 translate-x-0.5" />
+                <div className="absolute inset-0 bg-accent-magenta/10 -translate-x-0.5" />
               </div>
             </div>
             <p className="font-jetbrains-mono text-xs text-text-tertiary mt-3 text-center">
@@ -142,9 +144,8 @@ export default function AboutSection() {
 
           {/* Bio */}
           <div
-            className={`space-y-6 transition-all duration-1000 ease-out delay-200 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-32'
-            }`}
+            className={`space-y-6 transition-all duration-1000 ease-out delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-32'
+              }`}
           >
             <p className="text-body-lg text-text-primary leading-relaxed">
               I&apos;m <span className="text-accent-cyan font-semibold">Ujjwal Kumar</span>, a
@@ -184,11 +185,10 @@ export default function AboutSection() {
           {DO_CARDS.map((card, i) => (
             <GlassCard
               key={card.title}
-              className={`transition-all duration-700 ${
-                isVisible
+              className={`transition-all duration-700 ${isVisible
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-16'
-              }`}
+                }`}
               accent={card.accent}
             >
               <div

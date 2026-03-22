@@ -1,15 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useCursorStore } from '@/store/cursorStore';
+import dynamic from 'next/dynamic';
 import { GradientButton } from '@/components/shared';
 import { AnimatedIntroText } from './AnimatedIntroText';
+
+// Dynamic import for R3F Canvas component to avoid SSR issues
+const MechHeadCanvas = dynamic(
+  () => import('./MechHeadCanvas').then((mod) => mod.MechHeadCanvas),
+  { ssr: false, loading: () => <div className="w-full h-[600px]" /> }
+);
 
 export default function HeroSection() {
   const { setCursorState } = useCursorStore();
   const heroRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const isHeroInView = useInView(heroRef);
 
   // Scroll parallax effects for the entire hero section
   const { scrollY } = useScroll();
@@ -100,11 +108,15 @@ export default function HeroSection() {
 
         {/* Right Column — Model/Visual */}
         <div
-          className={`hidden lg:flex items-center justify-center transition-all duration-1000 delay-500 ${
+          className={`hidden lg:flex items-center justify-center transition-all duration-1000 delay-500 overflow-visible ${
             isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
           }`}
         >
-          {/* HeroOrb removed to showcase static background */}
+          <div className="relative w-[120%] h-[700px] flex items-center justify-center -translate-x-16">
+            {/* Ambient glow background for the head */}
+            <div className="absolute inset-0 bg-radial-glow opacity-40 pointer-events-none scale-150" />
+            <MechHeadCanvas inView={isHeroInView} />
+          </div>
         </div>
       </div>
       </motion.div>

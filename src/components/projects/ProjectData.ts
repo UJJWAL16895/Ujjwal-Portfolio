@@ -40,7 +40,8 @@ export const projects: Project[] = [
       'PBR textures with HDR lighting',
     ],
     accent: 'var(--accent-purple)',
-    image: '/images/projects/driving-sim-hero.jpg',
+    image: '/CarSimulatorThumbnail.png',
+    video: '/CarSimulator.mp4',
     featured: false,
   },
   {
@@ -60,7 +61,7 @@ export const projects: Project[] = [
       'Capstone project at LPU',
     ],
     accent: 'var(--accent-magenta)',
-    image: '/images/projects/finvani-hero.jpg',
+    image: '/Finvani Thumbnail.png',
     featured: false,
   },
   {
@@ -80,7 +81,7 @@ export const projects: Project[] = [
       '30% reduction in page load times',
     ],
     accent: 'var(--accent-green)',
-    image: '/images/projects/educode-hero.jpg',
+    image: '/EducodeThumbnail.png',
     featured: true,
   },
   {
@@ -99,7 +100,7 @@ export const projects: Project[] = [
       'Performance-optimized for mobile',
     ],
     accent: 'var(--accent-orange)',
-    image: '/images/projects/endless-runner-hero.jpg',
+    image: '/Chaser Thumbnail.png',
     featured: false,
   },
   {
@@ -118,7 +119,7 @@ export const projects: Project[] = [
       'Polished visual feedback',
     ],
     accent: 'var(--accent-cyan)',
-    image: '/images/projects/flappy-bird-hero.jpg',
+    image: '/Speed flappy bird.png',
     featured: false,
   },
   {
@@ -138,7 +139,8 @@ export const projects: Project[] = [
       'Fuel consumption minimization',
     ],
     accent: 'var(--accent-purple)',
-    image: '/images/projects/route-optim-hero.jpg',
+    image: '/Solid Waste thumbnail.png',
+    video: '/SolidWaste.mp4',
     github: 'https://github.com/UJJWAL16895/route-optimization',
     featured: true,
   },

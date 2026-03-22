@@ -55,6 +55,9 @@ const config: Config = {
       borderRadius: {
         '4xl': '2rem',
       },
+      backgroundImage: {
+        'radial-glow': 'radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%)',
+      },
     },
   },
   plugins: [],
