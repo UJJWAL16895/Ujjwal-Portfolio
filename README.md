@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Ujjwal Kumar — Developer Portfolio
 
-## Getting Started
+Welcome to my personal portfolio website built to showcase my work in  
+🎮 Game Development, 🧠 Machine Learning, and 🌐 Full-Stack Development.
 
-First, run the development server:
+---
+
+## 🌐 Live Demo
+
+🔗 **Portfolio Website:**  
+👉 https://ujjwal-portfolio-2cde.vercel.app/
+
+---
+
+## 🧠 About Me
+
+I am a Computer Science student focused on building **real-world systems** such as:
+
+- 🎮 Real-time multiplayer games  
+- 🌐 Scalable web platforms  
+- 🤖 Machine Learning applications  
+
+I enjoy creating **interactive, high-performance, and user-focused applications**.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- Next.js
+- Tailwind CSS
+- Framer Motion
+
+### 3D & Graphics
+- Three.js
+- React Three Fiber
+- Blender
+
+### Backend & Tools
+- Node.js
+- Git & GitHub
+- Vercel (Deployment)
+
+---
+
+## ✨ Features
+
+- 🌌 Cinematic UI with layered background (blackhole + particles)
+- 🧠 Interactive 3D elements (robot face, DNA visualization)
+- ⚡ Smooth animations and transitions
+- 🎮 Project showcase with video previews
+- 📱 Fully responsive design
+
+---
+
+## 🎯 Featured Projects
+
+### 🎮 Sumo Cars.io
+- Real-time multiplayer game (up to 8 players)
+- Cross-platform (PC + Android)
+- Territory painting + sumo-style combat
+- Live leaderboard & boost mechanics
+
+🔗 Repo: https://github.com/UJJWAL16895/Sumo-Cars-Unity
+
+---
+
+### 🧠 Solid Waste Route Optimization (ML)
+- Solves Vehicle Routing Problem (VRP)
+- Uses K-Means clustering + heuristics
+- Optimizes travel distance and fuel usage
+
+🔗 Repo: https://github.com/UJJWAL16895/route-optimization
+
+---
+
+### 🌐 EduCode (Startup Project)
+- Structured learning platform
+- Interactive coding + secure exam system
+- Currently implemented in batches at LPU
+
+---
+
+## 📂 Project Structure
+
+
+/public → static assets (images, models)
+/src
+/components → UI components
+/lib → utilities
+/hooks → custom hooks
+/app → pages (Next.js)
+
+
+---
+
+## ⚙️ Installation & Setup
 
 ```bash
+git clone https://github.com/UJJWAL16895/ujjwal-portfolio.git
+cd ujjwal-portfolio
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🚀 Deployment
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project is deployed using Vercel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm run build
+📫 Contact
+📧 Email: ujjwalkumar16895@gmail.com
+🔗 LinkedIn: https://linkedin.com/in/ujjwal-kumar-6c18
+🐙 GitHub: https://github.com/UJJWAL16895
+⭐ If you like this project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Give it a ⭐ on GitHub — it motivates me to build more!
